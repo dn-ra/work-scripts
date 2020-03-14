@@ -1,10 +1,13 @@
-#!/bin/env python3
+#!/usr/bin/env python3
 
 import pysam
+import numpy
 
 sam = pysam.AlignmentFile('sorted.allreads.bam')
 
 motif_seqs = []
+counts = numpy.zeros((4,11))
+
 
 
 for a in sam.fetch('MT007544.1', start = 65, stop = 75):
@@ -15,16 +18,31 @@ for a in sam.fetch('MT007544.1', start = 65, stop = 75):
 	pairs = a.get_aligned_pairs()
 	pairs_iter = iter(pairs)
 	motif_segment = ''
-	
+
 	for p in pairs:
-		if p[1] > 75:
-            break
-		elif p[1] >= 64 and p[1] <= 74:
-            if p[0] != None:
-                motif_segment+=p[0]
-            else:
-                motif_segment+='-'
-	motif_seqs.append(motif_segment)
-		
-	
-	
+		try:
+			if p[1] > 75:
+				break
+		except TypeError:
+			continue
+		if p[1] >= 64 and p[1] <= 74:
+            		if p[0] != None:
+                		motif_segment+=a.query_sequence[p[0]]
+            		else:
+                		motif_segment+='-'
+	if len(motif_segment) == 11:
+	#	print(motif_segment)
+		for i, sym in enumerate(motif_segment):
+			if sym == 'A':
+				counts[0,i] +=1
+			if sym == 'C':
+				counts[1,i]+=1
+			if sym == 'G':
+				counts[2,i]+=1
+			if sym == 'T':
+				counts[3,i]+=1
+
+with open('out.jaspar', 'w') as f:
+	for line in counts:
+		f.write(str([int(i) for i in line])+'\n')
+
