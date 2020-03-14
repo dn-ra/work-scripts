@@ -14,12 +14,11 @@ for a in sam.fetch('MT007544.1', start = 65, stop = 75):
 	
 	pairs = a.get_aligned_pairs()
 	pairs_iter = iter(pairs)
-	motif_segment = []
+	motif_segment = ''
 	
 	for p in pairs:
-		motif_segment = ''
 		if p[1] > 75:
-			break
+            break
 		elif p[1] >= 64 and p[1] <= 74:
             if p[0] != None:
                 motif_segment+=p[0]
