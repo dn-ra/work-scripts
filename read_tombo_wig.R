@@ -53,5 +53,7 @@ read_wig <- function(wig_file) {
 plot_meth <- function(meth_df, transcript_name) {
 	meth_50 <- subset(meth_df[which(meth_df$Transcript == transcript_name),], Fraction > 0.50)
 	meth_90 <- subset(meth_50[which(meth_df$Transcript == transcript_name),], Fraction > 0.90)
-	ggplot() + geom_vline(xintercept = meth_50$Base, alpha = meth_50$Fraction, color = '#94bdc9') + geom_vline(xintercept = meth_90$Base, color = '#2e66a9')+ theme_classic()
+	ggplot() + geom_vline(xintercept = meth_50$Base, alpha = meth_50$Fraction, color = '#94bdc9') + 
+	geom_vline(xintercept = meth_90$Base, color = '#2e66a9')+ labs(x = 'Genome Position (bp)', subtitle = transcript_name) +
+	theme_classic()
 	}
