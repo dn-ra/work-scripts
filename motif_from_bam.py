@@ -13,7 +13,7 @@ required_args.add_argument('BAM_in', type = str, help = 'Your minibam file conta
 settings_args = parser.add_argument_group('Settings')
 settings_args.add_argument('--jaspar', action = 'store_true', help = 'Produce count matrix in jaspar format')
 settings_args.add_argument('--fasta', action = 'store_true', help = 'Produce fasta output without gaps')
-settings_args.add_argument('--coords', type = integer, nargs = 2, help = 'start and stop co-ordinates for your region of interest')
+settings_args.add_argument('--coords', type = int, nargs = 2, help = 'start and stop co-ordinates for your region of interest')
 settings_args.add_argument('--chromosome', type = str, help = 'The chromosome/contig you are using as a reference', default = None)
 
 
