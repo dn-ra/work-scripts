@@ -14,7 +14,7 @@ settings_args = parser.add_argument_group('Settings')
 settings_args.add_argument('--jaspar', action = store_true, help = 'Do you want a fasta file of the selected region? Or a count matrix in jaspar format?')
 settings_args.add_argument('--fasta', action = store_true, )
 settings_args.add_argument('--coords', type = integer, nargs = 2, help = 'start and stop co-ordinates for your region of interest')
-settings_args.add_argument('--chromosome' type = str, help = 'The chromosome/contig you are using as a reference', default = None)
+settings_args.add_argument('--chromosome', type = str, help = 'The chromosome/contig you are using as a reference', default = None)
 
 
 args = parser.parse_args()
