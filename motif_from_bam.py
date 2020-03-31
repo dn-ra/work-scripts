@@ -40,7 +40,7 @@ for a in sam.fetch(contig = args.chromosome, start = args.coords[0], stop = args
 	# query_motif_coord = ref_motif_coord + a.query_alignment_start
 	# motif_seqs.append(a.query_sequence[query_motif_coord: query_motif_coord + 11])
 
-	if args.
+#if args.
 	pairs = a.get_aligned_pairs()
 	pairs_iter = iter(pairs)
 	motif_segment = ''
