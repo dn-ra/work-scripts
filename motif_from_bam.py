@@ -3,6 +3,7 @@
 import pysam
 import numpy
 import argparse
+import sys
 
 #parse arguments
 parser = argparse.ArgumentParser(description = 'Extract alignmened segments of reads from bam file')
@@ -13,8 +14,8 @@ required_args.add_argument('BAM_in', type = str, help = 'Your minibam file conta
 settings_args = parser.add_argument_group('Settings')
 settings_args.add_argument('--jaspar', action = 'store_true', help = 'Produce count matrix in jaspar format')
 settings_args.add_argument('--fasta', action = 'store_true', help = 'Produce fasta output without gaps')
-settings_args.add_argument('--coords', type = int, nargs = 2, help = 'start and stop co-ordinates for your region of interest')
-settings_args.add_argument('--chromosome', type = str, help = 'The chromosome/contig you are using as a reference', default = None)
+settings_args.add_argument('--coords', required = True, type = int, nargs = 2, help = 'start and stop co-ordinates for your region of interest')
+settings_args.add_argument('--chromosome', type = str, help = 'The chromosome/contig you are using as a reference [Default=None]', default = None)
 
 
 args = parser.parse_args()
@@ -22,8 +23,7 @@ args = parser.parse_args()
 print(args)
 
 if args.fasta == False and args.jaspar == False:
-	Error('Need at least one jaspar or fasta to be selected')
-	exit(1)
+	sys.exit('Need at least one jaspar or fasta to be selected')
 
 #-------------main------------
 
