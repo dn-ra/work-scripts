@@ -83,7 +83,7 @@ for a in sam.fetch(contig = args.chromosome, start = args.coords[0], stop = args
 				f.write(fasta_segment[i::]+'\n')
 f.close()
 
-if args.jaspar
+if args.jaspar:
 	with open(args.jaspar, 'w') as j:
 		for line in counts:
 			j.write(str([int(i) for i in line])+'\n')
