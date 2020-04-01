@@ -54,7 +54,7 @@ for a in sam.fetch(contig = args.chromosome, start = args.coords[0], stop = args
 		except TypeError:
 			continue
 		if p[1] >= args.coords[0] and p[1] <= args.coords[1]:
-        	if p[0] != None:
+			if p[0] != None:
 				if args.jaspar:
 					motif_segment+=a.query_sequence[p[0]]
 				if args.fasta:
