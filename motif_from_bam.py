@@ -35,14 +35,13 @@ motif_seqs = []
 motif_length = args.coords[1] - args.coords[0]
 counts = numpy.zeros((4,motif_length))
 
-
+seq_i = 0
 
 for a in sam.fetch(contig = args.chromosome, start = args.coords[0], stop = args.coords[1]):
 	# ref_motif_coord = 64-a.reference_start
 	# query_motif_coord = ref_motif_coord + a.query_alignment_start
 	# motif_seqs.append(a.query_sequence[query_motif_coord: query_motif_coord + 11])
-
-#if args.jaspar
+	seq_i+=1
 	pairs = a.get_aligned_pairs()
 	pairs_iter = iter(pairs)
 	motif_segment = ''
@@ -75,12 +74,13 @@ for a in sam.fetch(contig = args.chromosome, start = args.coords[0], stop = args
 					counts[3,i]+=1
 	if args.fasta:
 		#limit to 100 characters per line
-		f.write('>'+a.query_name+':'+'-'.join([str(x) for x in args.coords])+'\n')
-		for i in range(0, len(fasta_segment), 100):
-			try:
-				f.write(fasta_segment[i:i+100]+'\n')
-			except IndexError:
-				f.write(fasta_segment[i::]+'\n')
+		if fasta_segment:
+			f.write('>align_region_'+seq_i+'-'.join([str(x) for x in args.coords])+'\t'+a.query_name+'\n')
+			for i in range(0, len(fasta_segment), 100):
+				try:
+					f.write(fasta_segment[i:i+100]+'\n')
+				except IndexError:
+					f.write(fasta_segment[i::]+'\n')
 
 if args.fasta:
 	f.close()
