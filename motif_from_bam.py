@@ -75,7 +75,7 @@ for a in sam.fetch(contig = args.chromosome, start = args.coords[0], stop = args
 					counts[3,i]+=1
 	if args.fasta:
 		#limit to 100 characters per line
-		f.write('>'+a.query_name+':'+':'.join(args.coords)+'\n')
+		f.write('>'+a.query_name+':'+('-'.join(args.coords))+'\n')
 		for i in xrange(0, len(fasta_segment), 100):
 			try:
 				f.write(fasta_segment[i:i+100]+'\n')
