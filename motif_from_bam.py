@@ -60,7 +60,7 @@ for a in sam.fetch(contig = args.chromosome, start = args.coords[0], stop = args
 				if args.fasta:
 					fasta_segment+=a.query_sequence[p[0]]
 			elif args.jaspar:
-                motif_segment+='-'
+				motif_segment+='-'
 	if args.jaspar:
 		if len(motif_segment) == motif_length:
 		#	print(motif_segment)
