@@ -81,7 +81,9 @@ for a in sam.fetch(contig = args.chromosome, start = args.coords[0], stop = args
 				f.write(fasta_segment[i:i+100]+'\n')
 			except IndexError:
 				f.write(fasta_segment[i::]+'\n')
-f.close()
+
+if args.fasta:
+	f.close()
 
 if args.jaspar:
 	with open(args.jaspar, 'w') as j:
