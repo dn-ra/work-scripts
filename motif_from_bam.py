@@ -12,20 +12,22 @@ required_args.add_argument('BAM_in', type = str, help = 'Your minibam file conta
 
 
 settings_args = parser.add_argument_group('Settings')
-settings_args.add_argument('--jaspar', action = 'store_true', help = 'Produce count matrix in jaspar format')
-settings_args.add_argument('--fasta', action = 'store_true', help = 'Produce fasta output without gaps')
-settings_args.add_argument('--coords', required = True, type = int, nargs = 2, help = 'start and stop co-ordinates for your region of interest')
+settings_args.add_argument('--jaspar', type = str, help = 'Name of out file to produce count matrix in jaspar format', default = None)
+settings_args.add_argument('--fasta', type = str, help = 'Name of out file to produce fasta output without gaps', default = None)
+settings_args.add_argument('--coords', required = True, type = int, nargs = 2, help = 'Start and stop co-ordinates for your region of interest')
 settings_args.add_argument('--chromosome', type = str, help = 'The chromosome/contig you are using as a reference [Default=None]', default = None)
 
 
 args = parser.parse_args()
 
-print(args)
-
-if args.fasta == False and args.jaspar == False:
-	sys.exit('Need at least one jaspar or fasta to be selected')
+if args.fasta == None and args.jaspar == None:
+	sys.exit('Error: Need at least one of --jaspar or --fasta to be selected')
 
 #-------------main------------
+
+#open fasta file for continual writing
+if args.fasta:
+	f = open(args.fasta, 'w')
 
 sam = pysam.AlignmentFile(args.BAM_in)
 
@@ -40,34 +42,48 @@ for a in sam.fetch(contig = args.chromosome, start = args.coords[0], stop = args
 	# query_motif_coord = ref_motif_coord + a.query_alignment_start
 	# motif_seqs.append(a.query_sequence[query_motif_coord: query_motif_coord + 11])
 
-#if args.
+#if args.jaspar
 	pairs = a.get_aligned_pairs()
 	pairs_iter = iter(pairs)
 	motif_segment = ''
-
+	fasta_segment = ''
 	for p in pairs:
 		try:
-			if p[1] > 75:
+			if p[1] > args.coords[1] +1:
 				break
 		except TypeError:
 			continue
-		if p[1] >= 64 and p[1] <= 74:
+		if p[1] >= args.coords[0] and p[1] <= args.coords[1]:
             		if p[0] != None:
-                		motif_segment+=a.query_sequence[p[0]]
-            		else:
+						if args.jaspar:
+							motif_segment+=a.query_sequence[p[0]]
+						if args.fasta:
+							fasta_segment+=a.query_sequence[p[0]]
+            		elif args.jaspar:
                 		motif_segment+='-'
-	if len(motif_segment) == motif_length:
-	#	print(motif_segment)
-		for i, sym in enumerate(motif_segment):
-			if sym == 'A':
-				counts[0,i] +=1
-			if sym == 'C':
-				counts[1,i]+=1
-			if sym == 'G':
-				counts[2,i]+=1
-			if sym == 'T':
-				counts[3,i]+=1
+	if args.jaspar:
+		if len(motif_segment) == motif_length:
+		#	print(motif_segment)
+			for i, sym in enumerate(motif_segment):
+				if sym == 'A':
+					counts[0,i] +=1
+				if sym == 'C':
+					counts[1,i]+=1
+				if sym == 'G':
+					counts[2,i]+=1
+				if sym == 'T':
+					counts[3,i]+=1
+	if args.fasta:
+		#limit to 100 characters per line
+		f.write('>'+a.query_name+':'+':'.join(args.coords)+'\n')
+		for i in xrange(0, len(fasta_segment), 100):
+			try:
+				f.write(fasta_segment[i:i+100]+'\n')
+			except IndexError:
+				f.write(fasta_segment[i::]+'\n')
+f.close()
 
-with open('out.jaspar', 'w') as f:
-	for line in counts:
-		f.write(str([int(i) for i in line])+'\n')
+if args.jaspar
+	with open(args.jaspar, 'w') as j:
+		for line in counts:
+			j.write(str([int(i) for i in line])+'\n')
