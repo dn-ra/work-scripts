@@ -57,3 +57,11 @@ plot_meth <- function(meth_df, transcript_name) {
 	geom_vline(xintercept = meth_90$Base, color = '#2e66a9')+ labs(x = 'Genome Position (bp)', subtitle = transcript_name) +
 	theme_classic()
 	}
+
+#return n transcripts with highest mean fraction modified score. Not sure mean is most useful. Maybe change it to greatest # of sites > 0.5?
+get_most_meth <- function(meth_df, n =10) {
+	mean_fracs <- aggregate(meth_df[,'Fraction'], FUN=mean, by = list(meth_df$Transcript))
+	colnames(mean_fracs) <- c('Transcript', 'Mean_Fraction')
+	mean_fracs <- mean_fracs[order(test$Mean_Fraction, decreasing = T), c(1,2)]
+	return(head(mean_fracs, n =n))
+}
