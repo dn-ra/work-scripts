@@ -62,6 +62,6 @@ plot_meth <- function(meth_df, transcript_name) {
 get_most_meth <- function(meth_df, n =10) {
 	mean_fracs <- aggregate(meth_df[,'Fraction'], FUN=mean, by = list(meth_df$Transcript))
 	colnames(mean_fracs) <- c('Transcript', 'Mean_Fraction')
-	mean_fracs <- mean_fracs[order(meth_df$Mean_Fraction, decreasing = T), c(1,2)]
+	mean_fracs <- mean_fracs[order(mean_fracs$Mean_Fraction, decreasing = T), c(1,2)]
 	return(head(mean_fracs, n =n))
 }
