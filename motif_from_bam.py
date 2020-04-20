@@ -32,7 +32,7 @@ if args.fasta:
 sam = pysam.AlignmentFile(args.BAM_in)
 
 motif_seqs = []
-motif_length = args.coords[1] - args.coords[0]
+motif_length = args.coords[1] - args.coords[0] +1 #window size of all bases in motif
 counts = numpy.zeros((4,motif_length))
 
 seq_i = 0
