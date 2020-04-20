@@ -5,8 +5,8 @@ import sys
 from Bio import SeqIO
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--TRS_seq', type=str,description='Conserved Transcription Regulating Sequence to find', default='ACGAAC', required=False)
-parser.add_argument('--virus_genome', type=str, description='Location of viral genome fasta file', required=True)
+parser.add_argument('--TRS_seq', type=str,help='Conserved Transcription Regulating Sequence to find', default='ACGAAC', required=False)
+parser.add_argument('--virus_genome', type=str, help='Location of viral genome fasta file', required=True)
 args = parser.parse_args()
 
 lead100 = SeqIO.read(args.virus_genome, 'fasta')[0:99]
