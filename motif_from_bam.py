@@ -12,7 +12,7 @@ required_args.add_argument('BAM_in', type = str, help = 'Your minibam file conta
 
 
 settings_args = parser.add_argument_group('Settings')
-settings_args.add_argument('--jaspar', type = str, help = 'Name of out file to produce count matrix in jaspar format', default = None)
+settings_args.add_argument('--jaspar', type = str, help = 'Name of out file to produce count matrix in jaspar .cm format', default = None)
 settings_args.add_argument('--fasta', type = str, help = 'Name of out file to produce fasta output without gaps', default = None)
 settings_args.add_argument('--coords', required = True, type = int, nargs = 2, help = 'Start and stop co-ordinates for your region of interest')
 settings_args.add_argument('--chromosome', type = str, help = 'The chromosome/contig you are using as a reference [Default=None]', default = None)
@@ -89,6 +89,6 @@ if args.fasta:
 
 if args.jaspar:
 	with open(args.jaspar, 'w') as j:
-		for line, sym in zip(counts, ['A ','C ','G ','T ']):
-            count_string = '['  + ' '.join([str(i) for i in line]) + ' ]'
+		for line, sym in zip(counts, ['A| ','C| ','G| ','T| ']):
+            count_string = ' '.join([str(i) for i in line])
             j.write(sym+count_string'\n')
