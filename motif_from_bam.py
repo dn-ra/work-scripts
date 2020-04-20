@@ -23,6 +23,7 @@ args = parser.parse_args()
 if args.fasta == None and args.jaspar == None:
 	sys.exit('Error: Need at least one of --jaspar or --fasta to be selected')
 
+args.coords = [c-1 for c in args.coords] #correct for 0-based indexing
 #-------------main------------
 
 #open fasta file for continual writing
@@ -31,13 +32,14 @@ if args.fasta:
 
 sam = pysam.AlignmentFile(args.BAM_in)
 
+
 motif_seqs = []
 motif_length = args.coords[1] - args.coords[0] +1 #window size of all bases in motif
 counts = numpy.zeros((4,motif_length))
 
 seq_i = 0
 
-for a in sam.fetch(contig = args.chromosome, start = args.coords[0] +1, stop = args.coords[1] +1 ): #correct for 0-based index
+for a in sam.fetch(contig = args.chromosome, start = args.coords[0], stop = args.coords[1]):
 	# ref_motif_coord = 64-a.reference_start
 	# query_motif_coord = ref_motif_coord + a.query_alignment_start
 	# motif_seqs.append(a.query_sequence[query_motif_coord: query_motif_coord + 11])
@@ -62,7 +64,7 @@ for a in sam.fetch(contig = args.chromosome, start = args.coords[0] +1, stop = a
 				motif_segment+='-'
 	if args.jaspar:
 		if len(motif_segment) == motif_length:
-		#	print(motif_segment)
+			print(motif_segment)
 			for i, sym in enumerate(motif_segment):
 				if sym == 'A':
 					counts[0,i] +=1
