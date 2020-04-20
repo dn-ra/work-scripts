@@ -89,6 +89,6 @@ if args.fasta:
 
 if args.jaspar:
 	with open(args.jaspar, 'w') as j:
-		for line, sym in zip(counts, ['A|','C|','G|','T|']):
+		for line, sym in zip(counts, ['A ','C ','G ','T ']):
             count_string = '['  + ' '.join([str(i) for i in line]) + ' ]'
-			j.write(sym+' '+count_string'\n')
+            j.write(sym+count_string'\n')
