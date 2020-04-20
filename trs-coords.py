@@ -11,7 +11,7 @@ args = parser.parse_args()
 
 lead100 = SeqIO.read(args.virus_genome, 'fasta')[0:99]
 
-loc = lead100.find(args.TRS_seq)
+loc = lead100.seq.find(args.TRS_seq)
 if loc == -1:
     sys.exit('Error: Failed to find given TRS sequence in first 100bp of genome')
 else:
