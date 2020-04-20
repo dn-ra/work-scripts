@@ -37,7 +37,7 @@ counts = numpy.zeros((4,motif_length))
 
 seq_i = 0
 
-for a in sam.fetch(contig = args.chromosome, start = args.coords[0] -1, stop = args.coords[1] -1 ): #correct for 0-based index
+for a in sam.fetch(contig = args.chromosome, start = args.coords[0] +1, stop = args.coords[1] +1 ): #correct for 0-based index
 	# ref_motif_coord = 64-a.reference_start
 	# query_motif_coord = ref_motif_coord + a.query_alignment_start
 	# motif_seqs.append(a.query_sequence[query_motif_coord: query_motif_coord + 11])
