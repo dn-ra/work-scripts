@@ -145,6 +145,24 @@ plot_meth <- function(meth_df, transcript_name) {
 	theme_classic()
 	}
 
+#get differential methyation sites from coded_meth_matrix. applies to object: transcript target from meth_matrix
+return_diff <- function(meth_matrix_element, ignore = NULL) {
+  if (!is.null(ignore)) {
+    meth_matrix_element <- meth_matrix_element[,-ignore]
+  }
+  diff_idx <- apply(meth_matrix_element, MARGIN = 1, FUN=check_diff_row)
+  return(meth_matrix_element[diff_idx,])
+  
+  }
+  
+
+
+#check if methylation is different at base for each experiment. applies to object: row vector of coded methylation data.
+check_diff_row <- function(row) {
+  u <- unique(row)
+  return(length(u) != 1)
+  
+}
 
 #Not useful
 # #return n transcripts with highest mean fraction modified score. Not sure mean is most useful. Maybe change it to greatest # of sites > 0.5?
