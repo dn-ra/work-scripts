@@ -76,9 +76,9 @@ fill_missing <- function(meth_list_element) {
  }
 
 #set as 0,1,2 for degree of methyation at each base. applies to object: transcript within experiment
-meth_encode <- function(meth_list_element, low_for_0 = 0.5, high_for_1 = 0.9) {
+meth_encode <- function(meth_list_element, low_for_0 = 0.5, high_for_2 = 0.9) {
   
-  coded_meth <- cut(meth_list_element$Fraction, c(0, low_for_0, high_for_1,1.1), labels = c(0,1,2), right=FALSE)
+  coded_meth <- cut(meth_list_element$Fraction, c(0, low_for_0, high_for_2, 1.1), labels = c(0,1,2), right=FALSE)
   return(coded_meth)
 }
 
@@ -162,6 +162,16 @@ check_diff_row <- function(row) {
   u <- unique(row)
   return(length(u) != 1)
   
+}
+
+
+methpipe <-function(wig_files) {
+  meth <- lapply(wig_files, read_wig)
+  meth <- name_by_experiment(meth, wig_files) 
+  meth <- lapply(meth, adjust_experiment)
+  meth_matrix <- matrixify(meth)
+  
+  return(meth_matrix)
 }
 
 #Not useful
